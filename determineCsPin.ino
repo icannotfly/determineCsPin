@@ -64,6 +64,8 @@ void loop()
         Serial.println(F("Running..."));
     }
 
+    uint8_t foundCards = 0;
+
     for (uint8_t currentPin = minPin; currentPin < maxPin + 1; currentPin++)
     {
         if (bVerbose) {
@@ -74,6 +76,7 @@ void loop()
         Sd2Card card;
         if (card.init(SPI_HALF_SPEED, currentPin))
         {
+            foundCards++;
             SdVolume volume;
 
             Serial.println();
@@ -129,7 +132,7 @@ void loop()
         else
         {
             // What if we didn't find anything?
-            if (currentPin == maxPin)
+            if (currentPin == maxPin && foundCards == 0)
             {
                 Serial.println(F("\n\nUnable to find any SD cards."));
 
